@@ -12,9 +12,12 @@ td {
 .sumRow {
     color: darkblue;
 }
+.percentActive {
+    background-color: palegreen;
+}
 
 .activeItem {
-    background-color: firebrick;
+    background-color: firebrick!important;
 }
 
 .comingItemStyle {
