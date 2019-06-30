@@ -15,8 +15,8 @@ function init() {
         //validation input.
         let informationPlace = document.querySelector('.informationPlace');
         let informationMessage = '';
-        if (m === '' || n === '' || x === '' || m < 0 || n < 0 || x < 0) {
-            informationMessage = 'Заполните все поля, проверте или ввели числа больше нуля.';
+        if (m === '' || n === '' || x === '' || m < 0 || n < 0 || x < 0 || m > 30 || n > 30 || x > m*n-1){
+            informationMessage = 'Заполните все поля, проверьте или ввели числа больше нуля. Строки и колонки не должни быть больше 30.';
         } else {
             notMoreMatrix();
         }
@@ -204,6 +204,7 @@ function init() {
                     percent = Math.floor(matrix[i][j].amount * 100 / parseInt(sumRowElement[i].textContent));
                     matrixCellElemArray[i][j].textContent = percent + '%';
                     matrixCellElemArray[i][j].style.background = 'linear-gradient(white ' + (100 - percent) + '%, yellow ' + percent + '%)';
+                    matrixCellElemArray[i][j].style.fontWeight = 'bold';
                 }
             });
             //delete unnecessary classes and return matrix value
