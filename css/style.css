@@ -1,25 +1,140 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #e6f4fd;
+    font-family: 'Roboto', sans-serif;
+}
+
+.ui-form {
+    padding: 0 30px 30px 30px;
+    background: white;
+}
+
+.ui-form h4 {
+    position: relative;
+    text-align: center;
+    color: #4a90e2;
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 45px;
+}
+
+.form-row {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.form-row input {
+    display: block;
+    width: 100%;
+    padding: 0 10px;
+    line-height: 40px;
+    font-family: 'Roboto', sans-serif;
+    background: none;
+    border-width: 0;
+    border-bottom: 2px solid #4a90e2;
+    transition: all 0.2s ease;
+}
+
+.form-row label {
+    position: absolute;
+    left: 13px;
+    color: #9d959d;
+    font-size: 20px;
+    font-weight: 300;
+    transform: translateY(-35px);
+    transition: all 0.2s ease;
+}
+
+.form-row input:focus {
+    outline: 0;
+    border-color: #4a90e2;
+}
+
+.form-row input:focus + label,
+.form-row input:valid + label {
+    transform: translateY(-60px);
+    margin-left: -14px;
+    font-size: 14px;
+    font-weight: 400;
+    outline: 0;
+    border-color: #4a90e2;
+    color: #4a90e2;
+}
+
+.fullPage {
+    display: flex;
+}
+
+.formMatrix {
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+}
+
+#matrixPlace {
+    background-color: #e6f4fd;
+    margin: 0 auto;
+    border-radius: 15px;
+    /*width: 80%;*/
+}
 
 td {
+    background-color: white;
+    border: 1px solid silver;
     cursor: pointer;
     width: 50px;
     height: 50px;
     text-align: center;
+    border-radius: 20%;
 }
 
-.sumColomn {
-    color: darkred;
+#matrixPlace td:hover {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
 }
+
+.sumColumn {
+    color: #384866;
+    font-weight: bold;
+}
+
 .sumRow {
     color: darkblue;
+    font-weight: bold;
 }
+
 .percentActive {
     background-color: palegreen;
 }
 
 .activeItem {
-    background-color: firebrick!important;
+    color: white;
+    background-color: #ffcbcd !important;
+    font-weight: bold;
 }
 
 .comingItemStyle {
-    background-color: darkcyan;
+    color: white;
+    background-color: #cfe6f4;
+    font-weight: bold;
+}
+
+#elemCreate {
+    width: 100%;
+    line-height: 42px;
+    background: #4a90e2;
+    border-width: 0;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.informationPlace {
+    color: orangered;
+    font-weight: bold;
 }

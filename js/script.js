@@ -1,20 +1,48 @@
-document.querySelector('#elemCreate').addEventListener('click', start);
+document.querySelector('#elemCreate').addEventListener('click', init);
 
-function start() {
+function init() {
     const elemM = document.querySelector('#elemM');
     const elemN = document.querySelector('#elemN');
     const elemX = document.querySelector('#elemX');
     const m = elemM.value;
     const n = elemN.value;
     const x = elemX.value;
-
     let matrix = [];
-
     const matrixPlace = document.querySelector('#matrixPlace');
-    let table = document.createElement('table');
-    matrixPlace.appendChild(table);
+    let matrixCellElem = document.querySelectorAll('.matrixRowElem');
+
+    function validation() {
+        //validation input.
+        let informationPlace = document.querySelector('.informationPlace');
+        let informationMessage = '';
+        if (m === '' || n === '' || x === '' || m < 0 || n < 0 || x < 0) {
+            informationMessage = 'Заполните все поля, проверте или ввели числа больше нуля.';
+        } else {
+            notMoreMatrix();
+        }
+        informationPlace.textContent = informationMessage;
+    }
+
+    function notMoreMatrix() {
+        //to rewrite matrix values.
+        if (matrixCellElem.length !== 0) {
+            while (matrixPlace.firstChild) {
+                matrixPlace.removeChild(matrixPlace.firstChild);
+            }
+            getMatrix();
+        } else if (matrixCellElem.length === 0) {
+            getMatrix();
+        }
+    }
+
+    validation();
 
     function getMatrix() {
+        //create matrix in html page.
+        let table = document.createElement('table');
+        table.classList.add('matrixTable');
+        matrixPlace.appendChild(table);
+
         let flagId = 0;
         for (let i = 0; i < n; i++) {
             matrix[i] = [];
@@ -35,19 +63,19 @@ function start() {
             }
             table.appendChild(row);
         }
-
+        //to calculate matrix values
         getRowSum();
-        getColSum();
+        getColAverage();
         getCellForPercent();
     }
 
-    getMatrix();
-
     function getRandomNumber(min, max) {
+        //generation random number in range
         return Math.floor(Math.random() * (max - min) + min);
     }
 
     function getRowSum() {
+        //counting the sum of lines(m)
         let matrixRowElem = document.querySelectorAll('.matrixRowElem');
         let rowSum = 0;
         for (let i = 0; i < n; i++) {
@@ -62,12 +90,14 @@ function start() {
         }
     }
 
-    function getColSum() {
+    function getColAverage() {
+        //counting the sum of column(m) and calculate average value.
         let colSum = 0;
+        let table = document.querySelector('.matrixTable');
         let matrixColElem = document.createElement('tr');
         for (let i = 0; i < m; i++) {
             let matrixColSumElem = document.createElement('td');
-            matrixColSumElem.classList.add('sumColomn');
+            matrixColSumElem.classList.add('sumColumn');
             for (let j = 0; j < n; j++) {
                 colSum += matrix[j][i].amount;
             }
@@ -78,16 +108,17 @@ function start() {
         table.appendChild(matrixColElem);
     }
 
+    //clicker and increasing the value on the page
     function clickCell(column, matrix, i, j) {
         column.addEventListener('click', function () {
             matrix[i][j].amount += 1;
             column.textContent = parseInt(column.textContent) + 1;
             getRowSumAction();
-            getColSumAction();
+            getColAverageAction();
         });
     }
 
-
+    //to update the amount(sum) of the page
     function getRowSumAction() {
         let rowSum = 0;
         for (let i = 0; i < n; i++) {
@@ -100,10 +131,11 @@ function start() {
         }
     }
 
-    function getColSumAction() {
+    //to update the amount(average) of the page
+    function getColAverageAction() {
         let colSum = 0;
         for (let i = 0; i < m; i++) {
-            let colSumResult = document.querySelectorAll('.sumColomn');
+            let colSumResult = document.querySelectorAll('.sumColumn');
             for (let j = 0; j < n; j++) {
                 colSum += matrix[j][i].amount;
 
@@ -113,20 +145,18 @@ function start() {
         }
     }
 
+    //finding the nearest items
     function getComingItems(column, matrix, i, j) {
+        //mouseleave remove class.
         column.addEventListener('mouseleave', function () {
             this.classList.remove('activeItem');
             let matrixCellElem = document.querySelectorAll('.matrixCellElem');
             for (let i = 0; i < matrixCellElem.length; i++) {
                 matrixCellElem[i].classList.remove('comingItemStyle');
             }
-
-
-            // column.classList.remove('activeItem');
-            // column.classList.remove('comingItemStyle');
         });
+        //mouseover remove class
         column.addEventListener('mouseover', function () {
-
             let matrixCellElem = document.querySelectorAll('.matrixCellElem');
             let columnThisValue = column.textContent;
 
@@ -135,7 +165,7 @@ function start() {
                 element.classList.remove('comingItemStyle');
             });
 
-            let comingItems = [];
+            let comingItems;
             let tempArray = [];
             this.classList.add('activeItem');
             for (let i = 0; i < n; i++) {
@@ -143,6 +173,7 @@ function start() {
                     tempArray.push(matrix[i][j].amount);
                 }
             }
+            //find comingItem
             comingItems = tempArray.sort((a, b) => Math.abs(columnThisValue - a) - Math.abs(columnThisValue - b)).splice(1, x);
 
             for (let i = 0; i < matrixCellElem.length; i++) {
@@ -155,19 +186,19 @@ function start() {
         });
     }
 
+    //finding the percentage of the total amount
     function getCellForPercent() {
         let sumRowElement = document.querySelectorAll('.sumRow');
         let matrixCellElem = document.querySelectorAll('.matrixCellElem');
-
         let percent = 0;
-        //перевести с nodelist в масив, что бы потом можно было удобно обработать
+        //nodelist in array
         let matrixCellElemArray = Array.from(matrixCellElem);
-        //перевести в двумерный масив
+        //create two-dimensional array
         matrixCellElemArray = matrixCellElemArray.map((_, i, a) => a.slice(i * m, i * m + m)).filter((el) => el.length);
 
         for (let i = 0; i < n; i++) {
+            //highlighting of the current sum element
             sumRowElement[i].addEventListener('mouseover', function () {
-
                 sumRowElement[i].classList.add('percentActive');
                 for (let j = 0; j < m; j++) {
                     percent = Math.floor(matrix[i][j].amount * 100 / parseInt(sumRowElement[i].textContent));
@@ -175,7 +206,7 @@ function start() {
                     matrixCellElemArray[i][j].style.background = 'linear-gradient(white ' + (100 - percent) + '%, yellow ' + percent + '%)';
                 }
             });
-
+            //delete unnecessary classes and return matrix value
             sumRowElement[i].addEventListener('mouseleave', function () {
                 sumRowElement[i].classList.remove('percentActive');
                 for (let j = 0; j < m; j++) {
@@ -185,4 +216,6 @@ function start() {
             })
         }
     }
+
 }
+
