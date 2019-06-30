@@ -71,7 +71,7 @@ body {
 .formMatrix {
     display: flex;
     flex-direction: column;
-    width: 15%;
+    width: 20%;
 }
 
 #matrixPlace {
